@@ -1,7 +1,5 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_dangerously_set_inner_html
+from dash import dcc, html  # Update imports
 import mediapipe as mp
 import SquatPosture as sp
 from flask import Flask, Response
@@ -9,6 +7,7 @@ import cv2
 import tensorflow as tf
 import numpy as np
 from utils import landmarks_list_to_array, label_params, label_final_results
+
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
@@ -118,24 +117,22 @@ app.layout = html.Div(className="main", children=[
         rel="stylesheet",
         href="/assets/stylesheet.css"
     ),
-    dash_dangerously_set_inner_html.DangerouslySetInnerHTML("""
-        <div class="main-container">
-            <table cellspacing="20px" class="table">
-                <tr class="row">
-                    <td> <img src="/assets/animation_for_web.gif" class="logo" /> </td>
-                </tr>
-                <tr class="choices">
-                    <td> Your personal AI Gym Trainer </td>
-                </tr>
-                <tr class="row">
-                    <td> <img src="/video_feed" class="feed"/> </td>
-                </tr>
-                <tr class="disclaimer">
-                    <td> Please ensure that the scene is well lit and your entire body is visible </td>
-                </tr>
-            </table>
-        </div>
-    """),
+    html.Div(className="main-container", children=[
+        html.Table(className="table", style={'cellSpacing': '20px'}, children=[
+            html.Tr(className="row", children=[
+                html.Td(html.Img(src="/assets/animation_for_web.gif", className="logo"))
+            ]),
+            html.Tr(className="choices", children=[
+                html.Td("Your personal AI Gym Trainer")
+            ]),
+            html.Tr(className="row", children=[
+                html.Td(html.Img(src="/video_feed", className="feed"))
+            ]),
+            html.Tr(className="disclaimer", children=[
+                html.Td("Please ensure that the scene is well lit and your entire body is visible")
+            ])
+        ])
+    ])
 ])
 
 if __name__ == '__main__':
